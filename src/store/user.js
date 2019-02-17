@@ -23,9 +23,10 @@ export default{
     actions: {
         SIGNUP({commit},payload){
             commit('SET_PROCESSING',true)
+            commit('CLEAR_ERROR')
             firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-            .then(user=>{
-                commit('SET_USER',user.uid)
+            .then(()=>{
+                
                 commit('SET_PROCESSING',false)
             })    
             .catch(function(error) {
@@ -40,8 +41,8 @@ export default{
         SIGNIN({commit},payload){
             commit('SET_PROCESSING',true)
             firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-            .then(user=>{
-                commit('SET_USER',user.uid)
+            .then(()=>{
+                
                 commit('SET_PROCESSING',false)
             })    
             .catch(function(error) {
@@ -52,6 +53,9 @@ export default{
                 // var errorMessage = error.message;
                 // ...
               });
+        },
+        SIGNOUT(){
+            firebase.auth().signOut();
         },
         STATE_CHANGE({commit},payload){
             if(payload){

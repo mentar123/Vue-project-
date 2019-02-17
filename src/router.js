@@ -6,7 +6,7 @@ import Words from './views/words.vue'
 import Signin from './views/signin.vue'
 import Signup from './views/signup.vue'
 import Profile from './views/profile.vue'
-
+import store from './store'
 
 
 Vue.use(Router)
@@ -41,9 +41,17 @@ export default new Router({
     {
       path: '/profile',
       name: 'Profile',
-      component: Profile
+      component: Profile,
+      beforeEnter: AuthGuard
     },
    
   ],
   mode:'history'
 })
+function AuthGuard(from,to,next){
+  if(store.getters.isAuthenticated){
+    next()
+  }else{
+    next('/signin');
+  }
+}
